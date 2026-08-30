@@ -1,0 +1,6 @@
+[submodule "external/cnos"]
+	path = external/cnos
+	url = https://github.com/nv-nguyen/cnos.git
+[submodule "external/robot-renderer"]
+	path = external/robot-renderer
+	url = https://github.com/tjayada/robot-renderer.git

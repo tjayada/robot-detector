@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+
+# Hydra outputs
+outputs/
+multirun/
+.hydra/
+
+# Data / results (large, not version-controlled)
+data/
+checkpoints/
+results/
+debug_*/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Env
+.env
+.venv/
+
+# macOS
+.DS_Store
+
+# Debug
+visualizations/
+
+# Machine-specific copies of run scripts (personal paths), never ship these
+*.local.sh
+
+# Interrupted detector runs and atomic-write temporary files
+*.partial.jsonl
+*.tmp
+
+# Shipped detection JSONs live in detections/ and ARE committed.

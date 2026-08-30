@@ -1,0 +1,5 @@
+line-length = 120
+extend-exclude = ["external"]
+
+[lint]
+select = ["F", "E", "W", "B"]

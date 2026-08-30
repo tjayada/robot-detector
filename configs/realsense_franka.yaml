@@ -1,0 +1,51 @@
+# Detection config: RealSense-Franka dataset (CtRNet real Franka, D415 views).
+#
+# Run:
+#   python run_detect.py \
+#       --config configs/realsense_franka.yaml \
+#       --data_folder /path/to/RealSense-Franka \
+#       --output /path/to/detections/realsense_franka.json.gz
+#
+# data_folder is the root containing the D415 view subdirectories.
+
+dataset:
+  name: realsense_franka
+
+robot:
+  name: panda
+
+renderer:
+  render_size: 448
+  viewset: "fibonacci_256"
+  # 42 = CNOS canonical coarse template count (level_templates: 0).
+  num_views: 42
+  # Scale-invariant matching (both sides tight-cropped to 224), so this factor
+  # only has to keep the whole arm in frame. 2.25 clipped the larger arms
+  # (xArm/LBR) under real intrinsics; 3.0 clears the clip guard everywhere.
+  sphere_distance_factor: 3.0
+  elevation_range: [-90.0, 90.0]
+  anchor_elevation_range: [-5.0, 5.0]
+  orientation: "simple_upright"
+  diverse_selection: true
+
+detector:
+  # Default segmentor: SAM ViT-H (CNOS-canonical; won our SAM-vs-FastSAM comparison).
+  # FastSAM (the BOP default-detections source) stays available via --segmentor fastsam;
+  # shipped JSONs are provided for both (detections/sam/, detections/fastsam/).
+  segmentor: sam
+  dino_model: dinov2_vitl14
+  # SAM proposal stability filter: 0.5 follows the CNOS README recommendation
+  # for custom (non-BOP) objects (lower 0.97 to 0.5); all shipped SAM results
+  # were produced with 0.5. CNOS's BOP benchmark value is 0.97.
+  sam_stability_thresh: 0.5
+  confidence_threshold: 0.15
+  fastsam_checkpoint: null   # defaults to ~/.cache/cnos/FastSAM-x.pt
+  sam_checkpoint: null       # defaults to ~/.cache/cnos/sam_vit_h_4b8939.pth
+
+  # --- Proposal filtering / scoring knobs (CNOS BOP-canonical defaults) ---
+  min_box_size: 0.05
+  min_mask_size: 3.0e-4
+  top_k_templates: 5
+  fastsam_conf: 0.05
+  fastsam_iou: 0.9
+  fastsam_img_size: 640   # CNOS segmentor_width_size
